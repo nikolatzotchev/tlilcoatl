@@ -18,13 +18,13 @@ def standard_env() -> Env:
     env = Env()
     env.update(vars(math)) # sin, cos, sqrt, pi, ...
     env.update({
-        '+':op.add, '-':op.sub, '*':op.mul, '/':op.truediv, 
+        'add':op.add, 'sub':op.sub, 'mul':op.mul, 'div':op.truediv, 
         '>':op.gt, '<':op.lt, '>=':op.ge, '<=':op.le, '=':op.eq, 
         'abs':     abs,
         'append':  op.add,  
         'apply':   lambda proc, args: proc(*args),
         'begin':   lambda *x: x[-1],
-        'car':     lambda x: x[0],
+        'fst':     lambda x: x[0],
         'cdr':     lambda x: x[1:], 
         'cons':    lambda x,y: [x] + y,
         'eq?':     op.is_, 
@@ -115,7 +115,7 @@ def eval(x, env=global_env):
     elif op == 'set!':           # assignment
         (symbol, exp) = args
         env.find(symbol)[symbol] = eval(exp, env)
-    elif op == 'lambda':         # procedure
+    elif op == '->':             # procedure
         (parms, body) = args
         return Procedure(parms, body, env)
     else:                        # procedure call
@@ -137,6 +137,14 @@ def main():
     program = "(append (list 0) (list 1 2))"
 
     program = read_program_from_file('program.scm')
+
+    program = """
+    (begin
+        (define circle-area (-> r (mul pi (mul r r))))
+        (define lst (list 5 10))
+        (circle-area (add 5 (sub 10 (fst lst))))
+    )
+    """
 
     print(eval(parse(program)))
 
