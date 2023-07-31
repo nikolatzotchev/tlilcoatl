@@ -102,7 +102,12 @@ def eval(x, env=global_env):
         return env.find(x)[x]
     elif not isinstance(x, List):# constant 
         return x   
-    op, *args = x       
+    op, *args = x 
+
+    if (args[0] == '->'):       # lambda expression
+        x[0], x[1] = x[1], x[0]
+        return eval(x, env)
+
     if op == 'quote':            # quotation
         return args[0]
     elif op == 'if':             # conditional
@@ -137,14 +142,6 @@ def main():
     program = "(append (list 0) (list 1 2))"
 
     program = read_program_from_file('program.scm')
-
-    program = """
-    (begin
-        (define circle-area (-> r (mul pi (mul r r))))
-        (define lst (list 5 10))
-        (circle-area (add 5 (sub 10 (fst lst))))
-    )
-    """
 
     print(eval(parse(program)))
 
