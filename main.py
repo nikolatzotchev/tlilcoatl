@@ -98,9 +98,21 @@ def eval(x: Exp, env=global_env) -> Exp:
         args = [eval(arg, env) for arg in x[1:]]
         return proc(*args)
 
+def read_program_from_file(filename):
+    with open(filename, 'r') as file:
+        data = file.read().replace('\n', ' ')
+        return data
+
 def main():
     program = "(begin (define y 6) (if (> y 5) 1 0))"
-    # program = "(begin (define r 2) (* pi (* r r)))"
+    program = "(begin (define r 2) (* pi (* r r)))"
+    program = "(+ 6 1)"
+    program = "(expt 2 8)"
+    program = "(cons 0 (list 1 2))"
+    program = "(append (list 0) (list 1 2))"
+
+    program = read_program_from_file('program.scm')
+
     print(eval(parse(program)))
 
 if __name__ == "__main__":
