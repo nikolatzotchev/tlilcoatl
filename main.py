@@ -46,6 +46,22 @@ def standard_env() -> Env:
     })
     return env
 
+class Env(dict):
+    "An environment: a dict of {'var': val} pairs, with an outer Env."
+    def __init__(self, parms=(), args=(), outer=None):
+        self.update(zip(parms, args))
+        self.outer = outer
+    def find(self, var):
+        "Find the innermost Env where var appears."
+        return self if (var in self) else self.outer.find(var)
+
+class Procedure(object):
+    "A user-defined Scheme procedure."
+    def __init__(self, parms, body, env):
+        self.parms, self.body, self.env = parms, body, env
+    def __call__(self, *args): 
+        return eval(self.body, Env(self.parms, args, self.env))
+
 global_env = standard_env()
 
 def tokenize(chars: str) -> list:
@@ -80,23 +96,32 @@ def atom(token: str) -> Atom:
         except ValueError:
             return Symbol(token)
 
-def eval(x: Exp, env=global_env) -> Exp:
+def eval(x, env=global_env):
     "Evaluate an expression in an environment."
-    if isinstance(x, Symbol):        # variable reference
-        return env[x]
-    elif isinstance(x, Number):      # constant number
-        return x                
-    elif x[0] == 'if':               # conditional
-        (_, test, conseq, alt) = x
+    if isinstance(x, Symbol):    # variable reference
+        return env.find(x)[x]
+    elif not isinstance(x, List):# constant 
+        return x   
+    op, *args = x       
+    if op == 'quote':            # quotation
+        return args[0]
+    elif op == 'if':             # conditional
+        (test, conseq, alt) = args
         exp = (conseq if eval(test, env) else alt)
         return eval(exp, env)
-    elif x[0] == 'define':           # definition
-        (_, symbol, exp) = x
+    elif op == 'define':         # definition
+        (symbol, exp) = args
         env[symbol] = eval(exp, env)
-    else:                            # procedure call
-        proc = eval(x[0], env)
-        args = [eval(arg, env) for arg in x[1:]]
-        return proc(*args)
+    elif op == 'set!':           # assignment
+        (symbol, exp) = args
+        env.find(symbol)[symbol] = eval(exp, env)
+    elif op == 'lambda':         # procedure
+        (parms, body) = args
+        return Procedure(parms, body, env)
+    else:                        # procedure call
+        proc = eval(op, env)
+        vals = [eval(arg, env) for arg in args]
+        return proc(*vals)
 
 def read_program_from_file(filename):
     with open(filename, 'r') as file:

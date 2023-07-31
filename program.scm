@@ -1,4 +1,4 @@
 (begin
-    (define y 6)
-    (if (> y 5) 1 0)
+    (define circle-area (lambda (r) (* pi (* r r))))
+    (circle-area (+ 5 5))
 )
