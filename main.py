@@ -145,6 +145,8 @@ def main():
 
     program = read_program_from_file('program.tlil')
 
+    program = read_program_from_file('program2.tlil')
+
     print(eval(parse(program)))
 
 if __name__ == "__main__":

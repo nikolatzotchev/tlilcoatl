@@ -1,0 +1,4 @@
+(begin
+    (define add_mul (x -> (add (mul x x) x)))
+    (add_mul 2)
+)
