@@ -18,31 +18,32 @@ def standard_env() -> Env:
     env = Env()
     env.update(vars(math)) # sin, cos, sqrt, pi, ...
     env.update({
-        'add':op.add, 'sub':op.sub, 'mul':op.mul, 'div':op.truediv, 
-        '>':op.gt, '<':op.lt, '>=':op.ge, '<=':op.le, '=':op.eq, 
-        'abs':     abs,
-        'append':  op.add,  
-        'apply':   lambda proc, args: proc(*args),
-        'begin':   lambda *x: x[-1],
-        'fst':     lambda x: x[0],
-        'cdr':     lambda x: x[1:], 
-        'cons':    lambda x,y: [x] + y,
-        'eq?':     op.is_, 
-        'expt':    pow,
-        'equal?':  op.eq, 
-        'length':  len, 
-        'list':    lambda *x: List(x), 
-        'list?':   lambda x: isinstance(x, List), 
-        'map':     map,
-        'max':     max,
-        'min':     min,
-        'not':     op.not_,
-        'null?':   lambda x: x == [], 
-        'number?': lambda x: isinstance(x, Number),  
-		'print':   print,
-        'procedure?': callable,
-        'round':   round,
-        'symbol?': lambda x: isinstance(x, Symbol),
+        'add':      op.add,
+        'sub':      op.sub,
+        'mul':      op.mul,
+        'div':      op.truediv, 
+        '>':        op.gt,
+        '<':        op.lt,
+        '>=':       op.ge,
+        '<=':       op.le,
+        '=':        op.eq, 
+        'append':   op.add,  
+        'begin':    lambda *x: x[-1],
+        'fst':      lambda x: x[0],
+        'cons':     lambda x,y: [x] + y,
+        'eq?':      op.is_, 
+        'power':    pow,
+        'length':   len, 
+        'list':     lambda *x: List(x), 
+        'max':      max,
+        'min':      min,
+        'not':      op.not_,
+        'null?':    lambda x: x == [], 
+        'number?':  lambda x: isinstance(x, Number),  
+		'print':    print,
+        'procedure?':callable,
+        'round':    round,
+        'symbol?':  lambda x: isinstance(x, Symbol),
     })
     return env
 
@@ -134,14 +135,15 @@ def read_program_from_file(filename):
         return data
 
 def main():
-    program = "(begin (define y 6) (if (> y 5) 1 0))"
-    program = "(begin (define r 2) (* pi (* r r)))"
-    program = "(+ 6 1)"
-    program = "(expt 2 8)"
-    program = "(cons 0 (list 1 2))"
-    program = "(append (list 0) (list 1 2))"
+    # program = "(begin (define y 6) (if (> y 5) 1 0))"
+    # program = "(begin (define r 2) (mul pi (mul r r)))"
+    # program = "(add 6 1)"
+    # program = "(power 2 8)"
+    # program = "(cons 0 (list 1 2))"
+    # program = "(append (list 0) (list 1 2))"
+    # program = "(max 1 4)"
 
-    program = read_program_from_file('program.scm')
+    program = read_program_from_file('program.tlil')
 
     print(eval(parse(program)))
 
