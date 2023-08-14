@@ -6,15 +6,15 @@ Source: https://norvig.com/lispy.html
 import math
 import operator as op
 
-Symbol = str              # A Scheme Symbol is implemented as a Python str
-Number = (int, float)     # A Scheme Number is implemented as a Python int or float
-Atom   = (Symbol, Number) # A Scheme Atom is a Symbol or Number
-List   = list             # A Scheme List is implemented as a Python list
-Exp    = (Atom, List)     # A Scheme expression is an Atom or List
-Env    = dict             # A Scheme environment (defined below) is a mapping of {variable: value}
+Symbol = str              # A tlil Symbol is implemented as a Python str
+Number = (int, float)     # A tlil Number is implemented as a Python int or float
+Atom   = (Symbol, Number) # A tlil Atom is a Symbol or Number
+List   = list             # A tlil List is implemented as a Python list
+Exp    = (Atom, List)     # A tlil expression is an Atom or List
+Env    = dict             # A tlil environment (defined below) is a mapping of {variable: value}
 
 def standard_env() -> Env:
-    "An environment with some Scheme standard procedures."
+    "An environment with some standard procedures."
     env = Env()
     env.update(vars(math)) # sin, cos, sqrt, pi, ...
     env.update({
@@ -57,7 +57,7 @@ class Env(dict):
         return self if (var in self) else self.outer.find(var)
 
 class Procedure(object):
-    "A user-defined Scheme procedure."
+    "A user-defined procedure."
     def __init__(self, parms, body, env):
         self.parms, self.body, self.env = parms, body, env
     def __call__(self, *args): 
@@ -70,7 +70,7 @@ def tokenize(chars: str) -> list:
     return chars.replace('(', ' ( ').replace(')', ' ) ').split()
 
 def parse(program: str) -> Exp:
-    "Read a Scheme expression from a string."
+    "Read an expression from a string."
     return read_from_tokens(tokenize(program))
 
 def read_from_tokens(tokens: list) -> Exp:
@@ -143,9 +143,7 @@ def main():
     # program = "(append (list 0) (list 1 2))"
     # program = "(max 1 4)"
 
-    program = read_program_from_file('program.tlil')
-
-    program = read_program_from_file('program2.tlil')
+    program = read_program_from_file('program3.tlil')
 
     print(eval(parse(program)))
 
