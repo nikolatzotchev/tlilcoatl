@@ -4,6 +4,7 @@ Source: https://norvig.com/lispy.html
 """
 
 import math
+import sys
 import operator as op
 
 Symbol = str              # A tlil Symbol is implemented as a Python str
@@ -130,9 +131,13 @@ def eval(x, env=global_env):
         return proc(*vals)
 
 def read_program_from_file(filename):
-    with open(filename, 'r') as file:
-        data = file.read().replace('\n', ' ')
-        return data
+    try:
+        with open(filename, 'r') as file:
+            data = file.read().replace('\n', ' ')
+            return data
+    except FileNotFoundError:
+        print("\"{}\" : No such file or directory".format(filename))
+        sys.exit()
 
 def main():
     # program = "(begin (define y 6) (if (> y 5) 1 0))"
@@ -143,7 +148,11 @@ def main():
     # program = "(append (list 0) (list 1 2))"
     # program = "(max 1 4)"
 
-    program = read_program_from_file('program3.tlil')
+    if (len(sys.argv) != 2):
+        print("Usage: main.py filename")
+        sys.exit()
+
+    program = read_program_from_file(sys.argv[1])
 
     print(eval(parse(program)))
 
