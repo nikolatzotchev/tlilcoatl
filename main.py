@@ -1,8 +1,3 @@
-"""
-Simple interpreter for the Scheme programming language written in python
-Source: https://norvig.com/lispy.html
-"""
-
 import math
 import sys
 import operator as op
