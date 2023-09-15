@@ -1,0 +1,8 @@
+(begin
+    (define fac
+        (r ->
+            (if (> r 0) (mul r (fac (sub r 1))) 1) 
+        )
+    )
+    (fac 3)
+)
