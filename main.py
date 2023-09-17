@@ -135,13 +135,6 @@ def read_program_from_file(filename):
         sys.exit()
 
 def main():
-    # program = "(begin (define y 6) (if (> y 5) 1 0))"
-    # program = "(begin (define r 2) (mul pi (mul r r)))"
-    # program = "(add 6 1)"
-    # program = "(power 2 8)"
-    # program = "(cons 0 (list 1 2))"
-    # program = "(append (list 0) (list 1 2))"
-    # program = "(max 1 4)"
 
     if (len(sys.argv) != 2):
         print("Usage: main.py filename")

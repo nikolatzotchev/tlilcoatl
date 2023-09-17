@@ -1,0 +1,5 @@
+(begin
+    (define simple_func (r -> (r 1 2)))
+    (define func_var mul)
+    (simple_func func_var)
+)
